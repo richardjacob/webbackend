@@ -1,0 +1,48 @@
+# This file is a template, and might need editing before it works on your project.
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/php
+image: php:latest
+
+# Script executed before the various pipeline build stages are run - sets up the environment
+before_script:
+# Defines the stages in the Gitlab-CI Pipeline
+stages:
+  - prod
+  
+# Defines the Container environment variables
+variables:
+  BUNDLE_SRC: deploy-code.zip # defines the zipfile to upload to S3
+  ZIP_NAME: app-deploy-alesharidenet.zip
+  # EC2_FILE: scripts/instance.txt
+
+### DEPLOY ####################################################
+prod-job:
+  # Script to run for deploying application to AWS
+  script:
+    - apt-get update -qq && apt-get install -y -qq unzip zip git
+    - apt-get install -y -qq python3-distutils
+    - curl -O https://bootstrap.pypa.io/get-pip.py
+    - python3 get-pip.py
+    - pip install awscli # AWS CLI installation
+    # - pwd && whoami 
+    # - mkdir deploy-base
+    # - ls -al && cp -r `ls -A | grep -v "deploy-base"`  deploy-base/ -R 
+    # - ls -al ./  
+    - echo "**** IDENTIFY THE INSTANCE ID FROM YOUR AWS ACCOUNT ****"
+    - aws ec2 describe-instances --region ap-south-1 --filters "Name=tag:Domain,Values=alesharide.net" "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].InstanceId" --output text > scripts/instance.txt
+    - echo "*** YOUR INSTANCE ID IS HERE ***"
+    - cat scripts/instance.txt
+    - zip -ruq $BUNDLE_SRC  `ls -A | grep -v ".git"` 
+    - echo "*** COPY DATA TO S3 BUCKET FROM GITLAB CI ***"
+    - aws s3 cp $BUNDLE_SRC $AWS_S3_BUCKET_NAME # Uploads the zipfile to S3 and expects the AWS Code Pipeline/Code Deploy to pick up
+    - echo "*** RUN THE TRIGGER FROM GITLAB CI ***"
+    - sh scripts/forloop.sh
+  # requires previous CI stages to succeed in order to execute
+  stage: prod #assigns the stage as deploy
+  environment: production # Assign the Gitlab Environment for tracking purposes
+  cache:
+    key: "ui-$CI_BUILD_NAME-$CI_BUILD_REF_NAME"
+  only:
+    - alesharidetest
+  except:
+    - triggers

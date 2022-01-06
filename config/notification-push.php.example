@@ -1,0 +1,30 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: MD ARIFUL HAQUE
+ * Date: 9/25/2021
+ * Time: 11:33 pM
+ */
+
+
+return [
+    'mode'  => env('NOTIFICATION_MODE','sandbox'),
+    'sandbox' => [
+        'server_key'    => env( 'NOTIFICATION_SERVER_KEY', 'AAAAQKlAzaw:APA91bGDAS-yU3VWQKPVFhuJfG1w418oroS1n9NTGFVHatDPa6H4Cf5DeeaPi9cOqcX0r0TOoz7BbNCnbXSVcwiSLs2W5nR03clDZt3RueR0AhdCv7OMNadKmO9Igkhf4x-l7NNFMdeg'),
+        'topic_name_android_driver'    => env( 'NOTIFICATION_TOPIC_NAME_ANDROID_DRIVER', 'global_driver'),
+        'topic_name_android_rider'    => env( 'NOTIFICATION_TOPIC_NAME_ANDROID_RIDER', 'global_passenger'),
+        'topic_name_android'    => env( 'NOTIFICATION_TOPIC_NAME_ANDROID', 'global'),
+        'topic_name_ios_driver'    => env( 'NOTIFICATION_TOPIC_NAME_IOS_DRIVER', ''),
+        'topic_name_ios_rider'    => env( 'NOTIFICATION_TOPIC_NAME_IOS_RIDER', ''),
+        'topic_name_ios'    => env( 'NOTIFICATION_TOPIC_NAME_IOS', ''),
+    ],
+    'live' => [
+        'server_key'    => env( 'NOTIFICATION_SERVER_KEY', 'AAAAQKlAzaw:APA91bGDAS-yU3VWQKPVFhuJfG1w418oroS1n9NTGFVHatDPa6H4Cf5DeeaPi9cOqcX0r0TOoz7BbNCnbXSVcwiSLs2W5nR03clDZt3RueR0AhdCv7OMNadKmO9Igkhf4x-l7NNFMdeg'),
+        'topic_name_android_driver'    => env( 'NOTIFICATION_TOPIC_NAME_ANDROID_DRIVER', 'global_driver'),
+        'topic_name_android_rider'    => env( 'NOTIFICATION_TOPIC_NAME_ANDROID_RIDER', 'global_passenger'),
+        'topic_name_android'    => env( 'NOTIFICATION_TOPIC_NAME_ANDROID', 'global'),
+        'topic_name_ios_driver'    => env( 'NOTIFICATION_TOPIC_NAME_IOS_DRIVER', ''),
+        'topic_name_ios_rider'    => env( 'NOTIFICATION_TOPIC_NAME_IOS_RIDER', ''),
+        'topic_name_ios'    => env( 'NOTIFICATION_TOPIC_NAME_IOS', ''),
+    ],
+];

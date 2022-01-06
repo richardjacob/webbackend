@@ -1,0 +1,22 @@
+version: 0.0 
+os: linux
+files:
+  - source: / # This line assumes that your deployment code is located in
+    destination: /var/www/html/web-backend
+permissions:
+  # sets ec2-user as the owner:group for the application deployment directory
+  - object: /var/www/html/web-backend
+    owner: ubuntu
+    mode: 777
+    type:
+      - directory
+hooks:
+  # All hook scripts are assumed to be in the /install/aws_cicd directory located at the root of the deployment zip archive
+  BeforeInstall:
+    - location: scripts/before_install.sh
+      timeout: 180
+      runas: ubuntu
+  AfterInstall:
+    - location: scripts/after_install.sh
+      timeout: 180
+      runas: ubuntu 
